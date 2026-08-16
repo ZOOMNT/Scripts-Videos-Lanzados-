@@ -1,0 +1,2142 @@
+--1
+-- ============================================================
+-- SISTEMA DE LICENCIA
+-- Si tu quieres añadir una clave personalizada debes escribirla con toda mayuscula ejemplo:    ["TEST"] = true,
+
+local CLAVES_VALIDAS = {
+   ["OWNER"] = true,
+   ["TESTER30"] = true,
+   ["2EMU-2GDP-X496-87YV"] = true,
+   ["2WMR-HYB7-MP4H-F8WT"] = true,
+   ["53FS-HRB4-WNRF-G2AR"] = true,
+   ["5FXH-MYYU-95ZG-6C4M"] = true,
+   ["6KT5-LT4E-H7ZB-6GJT"] = true,
+   ["7AZE-TGSP-RPYF-Y36R"] = true,
+   ["7HE2-9HWW-QXTR-5XGU"] = true,
+   ["8AW7-WUU3-HXAQ-QCA3"] = true,
+   ["9L6P-2AS8-A8C3-CQMV"] = true,
+   ["9LWR-4M83-LF58-ZFAR"] = true,
+   ["AN9N-JWK9-CFYR-6Y3P"] = true,
+   ["BPFA-62TA-YLMX-G5UH"] = true,
+   ["CZJB-5X7U-AVXV-ZHKB"] = true,
+   ["DFQX-MYWY-M557-9CKK"] = true,
+   ["EMKP-QAWZ-SE39-JH7G"] = true,
+   ["F8EU-FXYB-9UPB-YG54"] = true,
+   ["FGGD-PATG-D5D9-QPZJ"] = true,
+   ["HD3L-EAKF-MVBV-RZHF"] = true,
+   ["HRMT-PX9V-BUQY-4CSF"] = true,
+   ["J3PG-DXSN-UDUH-PWE3"] = true,
+   ["JH29-KECF-6TYG-U2UE"] = true,
+   ["K9FL-MWT8-PXTE-JEL2"] = true,
+   ["LPJX-WHLV-SHZJ-JQUP"] = true,
+   ["MXBY-JYJU-SG8W-VBJ3"] = true,
+   ["N63Z-AQEC-9YVN-YZXS"] = true,
+   ["NEQF-4L25-6BGV-9TBF"] = true,
+   ["NTY5-GV87-Q5UE-27FN"] = true,
+   ["P4NE-P528-Q3MC-KPMF"] = true,
+   ["PE2X-35E4-BQEG-VKU4"] = true,
+   ["PETF-4JKH-XVV2-4XVB"] = true,
+   ["PK5J-SLTR-W4BJ-WQYZ"] = true,
+   ["QBAG-QKHC-7FDN-2VXS"] = true,
+   ["QLV8-ANFE-NM43-HF95"] = true,
+   ["QPR8-LKPT-Z2RQ-RW29"] = true,
+   ["QR4C-WDB4-VPGS-FMBZ"] = true,
+   ["S89Y-CEMH-UAM8-A9CD"] = true,
+   ["SFEJ-3JBV-GV4U-SD78"] = true,
+   ["SFRY-G24C-4B5Z-746V"] = true,
+   ["SRLY-R6L3-XLTD-AVYC"] = true,
+   ["TABB-Z349-F55D-LURR"] = true,
+   ["U85U-YKQ7-DECA-UWQB"] = true,
+   ["U9R8-NT92-2AE9-8386"] = true,
+   ["UFE9-MLWB-KX98-JR8U"] = true,
+   ["VFRH-MCM2-KN24-Q94W"] = true,
+   ["WDKL-69Q5-6YUH-2H39"] = true,
+   ["X4EQ-ZG6T-MVCJ-DCSW"] = true,
+   ["XEL9-9JZZ-VG8W-K6MU"] = true,
+   ["YD8C-ZYZG-CAFZ-SQ5B"] = true,
+   ["YMK8-EBRY-9TTY-C8QV"] = true,
+   ["ZUNM-9K9S-SYBB-JVQ5"] = true,
+}
+
+local URL_CLAVES = "https://keys-generator--lpmodsmc.replit.app"
+
+-- ============================================================
+-- SERVICIOS
+-- ============================================================
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- ============================================================
+-- GUI
+-- ============================================================
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "KeySystem"
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.Parent = playerGui
+
+-- Fondo principal
+local frame = Instance.new("Frame")
+frame.Name = "Main"
+frame.Size = UDim2.new(0, 370, 0, 245)
+frame.Position = UDim2.new(0.5, -185, 0.5, -122)
+frame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(0, 14)
+frameCorner.Parent = frame
+
+-- Borde
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(55, 55, 65)
+stroke.Thickness = 1
+stroke.Transparency = 0.25
+stroke.Parent = frame
+-- ============================================================
+-- ARRASTRAR GUI + BORDE RGB
+-- ============================================================
+
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+-- Borde RGB
+local rgbStroke = Instance.new("UIStroke")
+rgbStroke.Thickness = 2
+rgbStroke.Transparency = 0
+rgbStroke.Parent = frame
+
+-- Mantener las esquinas redondeadas
+local rgbCorner = Instance.new("UICorner")
+rgbCorner.CornerRadius = UDim.new(0, 14)
+rgbCorner.Parent = frame
+
+-- Área superior para mover el GUI
+local dragArea = Instance.new("Frame")
+dragArea.Name = "DragArea"
+dragArea.Size = UDim2.new(1, -20, 0, 65)
+dragArea.Position = UDim2.new(0, 10, 0, 5)
+dragArea.BackgroundTransparency = 1
+dragArea.Active = true
+dragArea.Parent = frame
+
+-- Sistema de movimiento
+local dragging = false
+local dragStart
+local startPosition
+
+dragArea.InputBegan:Connect(function(input)
+   if input.UserInputType == Enum.UserInputType.MouseButton1
+   or input.UserInputType == Enum.UserInputType.Touch then
+
+      dragging = true
+      dragStart = input.Position
+      startPosition = frame.Position
+
+      input.Changed:Connect(function()
+         if input.UserInputState == Enum.UserInputState.End then
+            dragging = false
+         end
+      end)
+   end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+   if dragging and (
+   input.UserInputType == Enum.UserInputType.MouseMovement
+   or input.UserInputType == Enum.UserInputType.Touch
+   ) then
+
+      local delta = input.Position - dragStart
+
+      frame.Position = UDim2.new(
+      startPosition.X.Scale,
+      startPosition.X.Offset + delta.X,
+      startPosition.Y.Scale,
+      startPosition.Y.Offset + delta.Y
+      )
+   end
+end)
+
+-- Animación RGB
+local hue = 0
+
+RunService.RenderStepped:Connect(function(deltaTime)
+   hue = (hue + deltaTime * 0.15) % 1
+   rgbStroke.Color = Color3.fromHSV(hue, 1, 1)
+end)
+-- ============================================================
+-- TITULO
+-- ============================================================
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -40, 0, 35)
+title.Position = UDim2.new(0, 20, 0, 16)
+title.BackgroundTransparency = 1
+title.Text = "KEY SYSTEM"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 22
+title.Font = Enum.Font.GothamBold
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = frame
+
+local subtitle = Instance.new("TextLabel")
+subtitle.Size = UDim2.new(1, -40, 0, 22)
+subtitle.Position = UDim2.new(0, 20, 0, 48)
+subtitle.BackgroundTransparency = 1
+subtitle.Text = "Global Scripts Key"
+subtitle.TextColor3 = Color3.fromRGB(155, 155, 165)
+subtitle.TextSize = 13
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextXAlignment = Enum.TextXAlignment.Left
+subtitle.Parent = frame
+
+-- ============================================================
+-- CAJA DE CLAVE
+-- ============================================================
+
+local keyBox = Instance.new("TextBox")
+keyBox.Name = "KeyInput"
+keyBox.Size = UDim2.new(1, -40, 0, 42)
+keyBox.Position = UDim2.new(0, 20, 0, 82)
+keyBox.BackgroundColor3 = Color3.fromRGB(27, 27, 33)
+keyBox.BorderSizePixel = 0
+keyBox.PlaceholderText = "XXXX-XXXX-XXXX-XXXX"
+keyBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 110)
+keyBox.Text = ""
+keyBox.TextColor3 = Color3.fromRGB(235, 235, 240)
+keyBox.TextSize = 14
+keyBox.Font = Enum.Font.Gotham
+keyBox.ClearTextOnFocus = false
+keyBox.Parent = frame
+
+local keyCorner = Instance.new("UICorner")
+keyCorner.CornerRadius = UDim.new(0, 9)
+keyCorner.Parent = keyBox
+
+local keyStroke = Instance.new("UIStroke")
+keyStroke.Color = Color3.fromRGB(55, 55, 65)
+keyStroke.Thickness = 1
+keyStroke.Transparency = 0.3
+keyStroke.Parent = keyBox
+
+-- BOTON VERIFICAR
+local verify = Instance.new("TextButton")
+verify.Name = "Verify"
+verify.Size = UDim2.new(0.5, -30, 0, 40)          -- ancho ajustado
+verify.Position = UDim2.new(0, 20, 0, 137)
+verify.BackgroundColor3 = Color3.fromRGB(45, 120, 255)
+verify.BorderSizePixel = 0
+verify.Text = "Verificar clave"
+verify.TextColor3 = Color3.fromRGB(255, 255, 255)
+verify.TextSize = 14
+verify.Font = Enum.Font.GothamBold
+verify.AutoButtonColor = true
+verify.Parent = frame
+
+local verifyCorner = Instance.new("UICorner")
+verifyCorner.CornerRadius = UDim.new(0, 9)
+verifyCorner.Parent = verify
+
+
+-- BOTON OBTENER CLAVE
+local getLink = Instance.new("TextButton")
+getLink.Name = "GetKey"
+getLink.Size = UDim2.new(0.5, -30, 0, 40)          -- mismo ancho
+getLink.Position = UDim2.new(0.5, 10, 0, 137)      -- ← posición corregida
+getLink.BackgroundColor3 = Color3.fromRGB(35, 35, 42)
+getLink.BorderSizePixel = 0
+getLink.Text = "Obtener clave"
+getLink.TextColor3 = Color3.fromRGB(220, 220, 225)
+getLink.TextSize = 14
+getLink.Font = Enum.Font.GothamBold
+getLink.AutoButtonColor = true
+getLink.Parent = frame
+
+local linkCorner = Instance.new("UICorner")
+linkCorner.CornerRadius = UDim.new(0, 9)
+linkCorner.Parent = getLink
+
+local linkStroke = Instance.new("UIStroke")
+linkStroke.Color = Color3.fromRGB(65, 65, 75)
+linkStroke.Thickness = 1
+linkStroke.Transparency = 0.25
+linkStroke.Parent = getLink
+
+-- ============================================================
+-- ESTADO
+-- ============================================================
+
+local status = Instance.new("TextLabel")
+status.Name = "Status"
+status.Size = UDim2.new(1, -40, 0, 30)
+status.Position = UDim2.new(0, 20, 0, 190)
+status.BackgroundTransparency = 1
+status.Text = "Esperando una clave..."
+status.TextColor3 = Color3.fromRGB(145, 145, 155)
+status.TextSize = 13
+status.Font = Enum.Font.Gotham
+status.TextXAlignment = Enum.TextXAlignment.Center
+status.Parent = frame
+
+-- ============================================================
+-- BOTON OBTENER CLAVE
+-- ============================================================
+
+getLink.MouseButton1Click:Connect(function()
+
+   if setclipboard then
+      setclipboard(URL_CLAVES)
+      status.Text = "✓ Enlace copiado al portapapeles."
+      status.TextColor3 = Color3.fromRGB(100, 220, 140)
+   else
+      status.Text = URL_CLAVES
+      status.TextColor3 = Color3.fromRGB(100, 180, 255)
+   end
+
+end)
+
+-- ============================================================
+-- VERIFICAR CLAVE
+-- ============================================================
+
+verify.MouseButton1Click:Connect(function()
+
+   local key = keyBox.Text:upper():gsub("%s+", "")
+
+   if key == "" then
+      status.Text = "Introduce una clave primero."
+      status.TextColor3 = Color3.fromRGB(255, 190, 80)
+      return
+   end
+
+   if CLAVES_VALIDAS[key] then
+
+      status.Text = "✓ Clave válida. Acceso autorizado."
+      status.TextColor3 = Color3.fromRGB(90, 230, 140)
+
+      -- Pequeña espera para mostrar el mensaje
+      task.wait(0.5)
+
+      -- ====================================================
+      -- IMPORTANTE:
+      -- EL GUI SE DESTRUYE ANTES DEL SCRIPT PRINCIPAL.
+      -- ====================================================
+
+      gui:Destroy()
+      -- Aqui debajo coloca tu script principal
+      local Players = game:GetService("Players")
+      local TweenService = game:GetService("TweenService")
+      local UserInputService = game:GetService("UserInputService")
+      local RunService = game:GetService("RunService")
+      local Lighting = game:GetService("Lighting")
+
+      local player = Players.LocalPlayer
+      local playerGui = player:WaitForChild("PlayerGui")
+
+      -- ============================================================
+      -- CONFIG
+      -- ============================================================
+
+      local GUI_NAME = "Muscle Beach Arena Script"
+
+      -- ============================================================
+      -- GUI PRINCIPAL
+      -- ============================================================
+
+      local gui = Instance.new("ScreenGui")
+      gui.Name = GUI_NAME
+      gui.IgnoreGuiInset = true
+      gui.ResetOnSpawn = false
+      gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+      gui.Parent = playerGui
+
+      -- ============================================================
+      -- PANEL
+      -- ============================================================
+
+      local frame = Instance.new("Frame")
+      frame.Name = "MainFrame"
+      frame.AnchorPoint = Vector2.new(0.5, 0.5)
+      frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+      frame.Size = UDim2.new(0, 400, 0, 285)
+      frame.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+      frame.BorderSizePixel = 0
+      frame.Active = true
+      frame.ZIndex = 5
+      frame.Parent = gui
+
+      local corner = Instance.new("UICorner")
+      corner.CornerRadius = UDim.new(0, 14)
+      corner.Parent = frame
+
+      local stroke = Instance.new("UIStroke")
+      stroke.Thickness = 2
+      stroke.Transparency = 0.1
+      stroke.Parent = frame
+
+      -- ============================================================
+      -- GRADIENTE
+      -- ============================================================
+
+      local gradient = Instance.new("UIGradient")
+      gradient.Color = ColorSequence.new({
+         ColorSequenceKeypoint.new(0, Color3.fromRGB(13, 13, 16)),
+         ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 30))
+      })
+      gradient.Rotation = 90
+      gradient.Parent = frame
+
+      -- ============================================================
+      -- GLOW SUAVE
+      -- ============================================================
+
+      local glow = Instance.new("UIStroke")
+      glow.Thickness = 7
+      glow.Transparency = 0.88
+      glow.Parent = frame
+
+      -- ============================================================
+      -- TITULO
+      -- ============================================================
+
+      local title = Instance.new("TextLabel")
+      title.Name = "Title"
+      title.Size = UDim2.new(1, -65, 0, 35)
+      title.Position = UDim2.new(0, 18, 0, 13)
+      title.BackgroundTransparency = 1
+      title.Text = "Muscle Beach Arena"
+      title.TextColor3 = Color3.fromRGB(255, 255, 255)
+      title.TextSize = 21
+      title.Font = Enum.Font.GothamBold
+      title.TextXAlignment = Enum.TextXAlignment.Left
+      title.ZIndex = 7
+      title.Parent = frame
+
+      -- ============================================================
+      -- SUBTITULO
+      -- ============================================================
+
+      local subtitle = Instance.new("TextLabel")
+      subtitle.Name = "Subtitle"
+      subtitle.Size = UDim2.new(1, -36, 0, 25)
+      subtitle.Position = UDim2.new(0, 18, 0, 48)
+      subtitle.BackgroundTransparency = 1
+      subtitle.Text = "BY: GlobalScriptsrbx"
+      subtitle.TextColor3 = Color3.fromRGB(145, 145, 155)
+      subtitle.TextSize = 12
+      subtitle.Font = Enum.Font.Gotham
+      subtitle.TextXAlignment = Enum.TextXAlignment.Left
+      subtitle.ZIndex = 7
+      subtitle.Parent = frame
+
+      -- ============================================================
+      -- AVATAR
+      -- ============================================================
+
+      local avatar = Instance.new("ImageLabel")
+      avatar.Name = "Avatar"
+      avatar.Size = UDim2.new(0, 58, 0, 58)
+      avatar.Position = UDim2.new(1, -76, 0, 17)
+      avatar.BackgroundTransparency = 1
+      avatar.ZIndex = 8
+      avatar.Parent = frame
+
+      local avatarCorner = Instance.new("UICorner")
+      avatarCorner.CornerRadius = UDim.new(1, 0)
+      avatarCorner.Parent = avatar
+
+      local avatarStroke = Instance.new("UIStroke")
+      avatarStroke.Thickness = 1.5
+      avatarStroke.Transparency = 0.2
+      avatarStroke.Parent = avatar
+
+      local success, image = pcall(function()
+         return Players:GetUserThumbnailAsync(
+         player.UserId,
+         Enum.ThumbnailType.HeadShot,
+         Enum.ThumbnailSize.Size420x420
+         )
+      end)
+
+      if success then
+         avatar.Image = image
+      end
+
+      -- ============================================================
+      -- LINEA DECORATIVA
+      -- ============================================================
+
+      local line = Instance.new("Frame")
+      line.Name = "Line"
+      line.Size = UDim2.new(1, -36, 0, 1)
+      line.Position = UDim2.new(0, 18, 0, 84)
+      line.BorderSizePixel = 0
+      line.BackgroundColor3 = Color3.fromRGB(60, 60, 68)
+      line.ZIndex = 7
+      line.Parent = frame
+
+      -- ============================================================
+      -- TEXTO DE ESTADO
+      -- ============================================================
+
+      local status = Instance.new("TextLabel")
+      status.Name = "Status"
+      status.Size = UDim2.new(1, -36, 0, 35)
+      status.Position = UDim2.new(0, 18, 0, 101)
+      status.BackgroundTransparency = 1
+      status.Text = "Ready"
+      status.TextColor3 = Color3.fromRGB(190, 190, 198)
+      status.TextSize = 14
+      status.Font = Enum.Font.GothamMedium
+      status.TextXAlignment = Enum.TextXAlignment.Left
+      status.ZIndex = 7
+      status.Parent = frame
+      -- ============================================================
+      -- MUSCLE EVENT TEST
+      -- ============================================================
+
+      local MuscleEvent = game:GetService("ReplicatedStorage")
+      .remotes
+      .MuscleEvent
+
+      local muscleEnabled = false
+
+      local muscleButton = Instance.new("TextButton")
+      muscleButton.Name = "MuscleButton"
+      muscleButton.Size = UDim2.new(0, 130, 0, 34)
+      muscleButton.Position = UDim2.new(0, 18, 0, 137)
+      muscleButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      muscleButton.BorderSizePixel = 0
+      muscleButton.Text = "Auto Lift: OFF"
+      muscleButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      muscleButton.TextSize = 11
+      muscleButton.Font = Enum.Font.GothamBold
+      muscleButton.AutoButtonColor = false
+      muscleButton.ZIndex = 8
+      muscleButton.Parent = frame
+
+      local muscleCorner = Instance.new("UICorner")
+      muscleCorner.CornerRadius = UDim.new(0, 9)
+      muscleCorner.Parent = muscleButton
+
+      local muscleStroke = Instance.new("UIStroke")
+      muscleStroke.Thickness = 1.3
+      muscleStroke.Transparency = 0.15
+      muscleStroke.Parent = muscleButton
+
+      -- ON / OFF
+
+      muscleButton.MouseButton1Click:Connect(function()
+
+         muscleEnabled = not muscleEnabled
+
+         if muscleEnabled then
+
+            muscleButton.Text = "Auto Lift: ON"
+            status.Text = "MuscleEvent active"
+
+            task.spawn(function()
+
+               while muscleEnabled do
+
+                  pcall(function()
+                     MuscleEvent:FireServer("tool")
+                  end)
+
+                  task.wait(0.05)
+               end
+
+            end)
+
+         else
+
+            muscleButton.Text = "Auto Lift: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+      -- Efecto al pasar el mouse
+
+      muscleButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         muscleButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(45, 45, 53)
+         }
+         ):Play()
+
+      end)
+
+      muscleButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         muscleButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+         }
+         ):Play()
+
+      end)
+
+      -- ============================================================
+      -- AUTO REBIRTH + REACH REBIRTH
+      -- ============================================================
+
+      local RebirthEvent = game:GetService("ReplicatedStorage")
+      :WaitForChild("remotes")
+      :WaitForChild("rebirthRequest")
+
+      local rebirthEnabled = false
+      local reachRebirth = nil
+
+      -- BOTÓN AUTO REBIRTH
+      local rebirthButton = Instance.new("TextButton")
+      rebirthButton.Name = "RebirthButton"
+      rebirthButton.Size = UDim2.new(0, 130, 0, 34)
+      rebirthButton.Position = UDim2.new(0, 158, 0, 137)
+      rebirthButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      rebirthButton.BorderSizePixel = 0
+      rebirthButton.Text = "Auto Rebirth: OFF"
+      rebirthButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      rebirthButton.TextSize = 11
+      rebirthButton.Font = Enum.Font.GothamBold
+      rebirthButton.AutoButtonColor = false
+      rebirthButton.ZIndex = 8
+      rebirthButton.Parent = frame
+
+      local rebirthCorner = Instance.new("UICorner")
+      rebirthCorner.CornerRadius = UDim.new(0, 9)
+      rebirthCorner.Parent = rebirthButton
+
+      local rebirthStroke = Instance.new("UIStroke")
+      rebirthStroke.Thickness = 1.3
+      rebirthStroke.Transparency = 0.15
+      rebirthStroke.Parent = rebirthButton
+
+
+      -- CAMPO REACH REBIRTH
+      local reachBox = Instance.new("TextBox")
+      reachBox.Name = "ReachRebirth"
+      reachBox.Size = UDim2.new(0, 100, 0, 28)
+      reachBox.Position = UDim2.new(0, 293, 0, 140)
+      reachBox.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+      reachBox.BorderSizePixel = 0
+      reachBox.Text = ""
+      reachBox.PlaceholderText = "Reach Rebirth"
+      reachBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 130)
+      reachBox.TextColor3 = Color3.fromRGB(220, 220, 225)
+      reachBox.TextSize = 11
+      reachBox.Font = Enum.Font.GothamBold
+      reachBox.ClearTextOnFocus = false
+      reachBox.ZIndex = 8
+      reachBox.Parent = frame
+
+      local reachCorner = Instance.new("UICorner")
+      reachCorner.CornerRadius = UDim.new(0, 8)
+      reachCorner.Parent = reachBox
+
+      local reachStroke = Instance.new("UIStroke")
+      reachStroke.Thickness = 1.2
+      reachStroke.Transparency = 0.2
+      reachStroke.Parent = reachBox
+
+
+      -- AUTO REBIRTH
+      rebirthButton.MouseButton1Click:Connect(function()
+
+         rebirthEnabled = not rebirthEnabled
+
+         if rebirthEnabled then
+
+            -- Leer objetivo
+            local target = tonumber(reachBox.Text)
+
+            if target and target > 0 then
+               reachRebirth = math.floor(target)
+            else
+               reachRebirth = nil
+            end
+
+            rebirthButton.Text = "Auto Rebirth: ON"
+            status.Text = "Auto Rebirth active"
+
+            task.spawn(function()
+
+               while rebirthEnabled do
+
+                  local leaderstats = player:FindFirstChild("leaderstats")
+                  local rebirths = leaderstats and leaderstats:FindFirstChild("Rebirths")
+
+                  -- Si hay objetivo y ya llegamos, detener
+                  if reachRebirth and rebirths then
+
+                     if rebirths.Value >= reachRebirth then
+
+                        rebirthEnabled = false
+                        rebirthButton.Text = "Auto Rebirth: OFF"
+                        status.Text = "Reach Rebirth reached"
+
+                        break
+                     end
+
+                  end
+
+                  -- Solicitar rebirth
+                  pcall(function()
+                     RebirthEvent:FireServer()
+                  end)
+
+                  task.wait(0.5)
+
+               end
+
+            end)
+
+         else
+
+            rebirthButton.Text = "Auto Rebirth: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+
+      -- EFECTOS
+      rebirthButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         rebirthButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(45, 45, 53)
+         }
+         ):Play()
+
+      end)
+
+      rebirthButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         rebirthButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+         }
+         ):Play()
+
+      end)
+
+      -- ============================================================
+      -- FREEZE PLAYER
+      -- ============================================================
+
+      local freezeEnabled = false
+      local freezePosition = nil
+
+      local freezeButton = Instance.new("TextButton")
+      freezeButton.Name = "FreezeButton"
+      freezeButton.Size = UDim2.new(0, 130, 0, 34)
+      freezeButton.Position = UDim2.new(0, 18, 0, 180)
+      freezeButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      freezeButton.BorderSizePixel = 0
+      freezeButton.Text = "Freeze: OFF"
+      freezeButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      freezeButton.TextSize = 11
+      freezeButton.Font = Enum.Font.GothamBold
+      freezeButton.AutoButtonColor = false
+      freezeButton.ZIndex = 8
+      freezeButton.Parent = frame
+
+      local freezeCorner = Instance.new("UICorner")
+      freezeCorner.CornerRadius = UDim.new(0, 9)
+      freezeCorner.Parent = freezeButton
+
+      local freezeStroke = Instance.new("UIStroke")
+      freezeStroke.Thickness = 1.3
+      freezeStroke.Transparency = 0.15
+      freezeStroke.Parent = freezeButton
+
+      freezeButton.MouseButton1Click:Connect(function()
+
+         freezeEnabled = not freezeEnabled
+
+         local character = player.Character
+         local root = character and character:FindFirstChild("HumanoidRootPart")
+
+         if not root then
+            freezeEnabled = false
+            return
+         end
+
+         if freezeEnabled then
+
+            -- Guardar exactamente dónde estaba
+            freezePosition = root.CFrame
+
+            root.Anchored = true
+
+            freezeButton.Text = "Freeze: ON"
+            status.Text = "Player frozen"
+
+         else
+
+            root.Anchored = false
+
+            freezePosition = nil
+
+            freezeButton.Text = "Freeze: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+      -- Volver a congelar después de morir
+      player.CharacterAdded:Connect(function(character)
+
+         local root = character:WaitForChild("HumanoidRootPart")
+
+         if freezeEnabled and freezePosition then
+
+            task.wait(0.2)
+
+            root.CFrame = freezePosition
+            root.Anchored = true
+
+            freezeButton.Text = "Freeze: ON"
+            status.Text = "Player frozen"
+
+         end
+
+      end)
+
+      freezeButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         freezeButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(45, 45, 53)
+         }
+         ):Play()
+
+      end)
+
+      freezeButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         freezeButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+         }
+         ):Play()
+
+      end)
+
+      -- ============================================================
+      -- AUTO EQUIPAR PESA AL RESPAWNEAR
+      -- ============================================================
+
+      local TOOL_NAME = "Rookie Dumbbell"
+
+      local function equipPesa()
+         local character = player.Character
+         if not character then return end
+
+         local humanoid = character:FindFirstChildOfClass("Humanoid")
+         if not humanoid then return end
+
+         local backpack = player:FindFirstChildOfClass("Backpack")
+         if not backpack then return end
+
+         local pesa = backpack:FindFirstChild(TOOL_NAME)
+
+         if pesa and pesa:IsA("Tool") then
+            humanoid:EquipTool(pesa)
+         end
+      end
+
+      player.CharacterAdded:Connect(function(character)
+
+         character:WaitForChild("Humanoid")
+
+         task.wait(0.5)
+
+         equipPesa()
+
+      end)
+      -- ============================================================
+      -- AUTO SPIN
+      -- ============================================================
+
+      local SpinEvent = game:GetService("ReplicatedStorage")
+      :WaitForChild("spinRequest")
+
+      local spinEnabled = false
+
+      local spinButton = Instance.new("TextButton")
+      spinButton.Name = "SpinButton"
+      spinButton.Size = UDim2.new(0, 130, 0, 34)
+      spinButton.Position = UDim2.new(0, 158, 0, 180)
+      spinButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      spinButton.BorderSizePixel = 0
+      spinButton.Text = "Auto Spin: OFF"
+      spinButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      spinButton.TextSize = 11
+      spinButton.Font = Enum.Font.GothamBold
+      spinButton.AutoButtonColor = false
+      spinButton.ZIndex = 8
+      spinButton.Parent = frame
+
+      local spinCorner = Instance.new("UICorner")
+      spinCorner.CornerRadius = UDim.new(0, 9)
+      spinCorner.Parent = spinButton
+
+      local spinStroke = Instance.new("UIStroke")
+      spinStroke.Thickness = 1.3
+      spinStroke.Transparency = 0.15
+      spinStroke.Parent = spinButton
+
+      spinButton.MouseButton1Click:Connect(function()
+
+         spinEnabled = not spinEnabled
+
+         if spinEnabled then
+
+            spinButton.Text = "Auto Spin: ON"
+            status.Text = "Auto Spin active"
+
+            task.spawn(function()
+
+               while spinEnabled do
+
+                  pcall(function()
+                     SpinEvent:FireServer()
+                  end)
+
+                  task.wait(0.5)
+
+               end
+
+            end)
+
+         else
+
+            spinButton.Text = "Auto Spin: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+      spinButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         spinButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(45, 45, 53)
+         }
+         ):Play()
+
+      end)
+
+      spinButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         spinButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+         }
+         ):Play()
+
+      end)
+
+      -- ============================================================
+      -- TP BOTS
+      -- ============================================================
+
+      local tpBotsEnabled = false
+
+      local tpBotsButton = Instance.new("TextButton")
+      tpBotsButton.Name = "TPBotsButton"
+      tpBotsButton.Size = UDim2.new(0, 130, 0, 34)
+      tpBotsButton.Position = UDim2.new(0, 18, 0, 223)
+      tpBotsButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      tpBotsButton.BorderSizePixel = 0
+      tpBotsButton.Text = "TP Players: OFF"
+      tpBotsButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      tpBotsButton.TextSize = 11
+      tpBotsButton.Font = Enum.Font.GothamBold
+      tpBotsButton.AutoButtonColor = false
+      tpBotsButton.ZIndex = 8
+      tpBotsButton.Parent = frame
+
+      local tpBotsCorner = Instance.new("UICorner")
+      tpBotsCorner.CornerRadius = UDim.new(0, 9)
+      tpBotsCorner.Parent = tpBotsButton
+
+      local tpBotsStroke = Instance.new("UIStroke")
+      tpBotsStroke.Thickness = 1.3
+      tpBotsStroke.Transparency = 0.15
+      tpBotsStroke.Parent = tpBotsButton
+
+      tpBotsButton.MouseButton1Click:Connect(function()
+
+         tpBotsEnabled = not tpBotsEnabled
+
+         if tpBotsEnabled then
+
+            tpBotsButton.Text = "TP Players: ON"
+            status.Text = "TP Players active"
+
+            task.spawn(function()
+
+               while tpBotsEnabled do
+
+                  local character = player.Character
+                  local myRoot = character and character:FindFirstChild("HumanoidRootPart")
+
+                  if myRoot then
+
+                     for _, otherPlayer in ipairs(game:GetService("Players"):GetPlayers()) do
+
+                        if otherPlayer ~= player then
+
+                           local otherCharacter = otherPlayer.Character
+                           if otherCharacter then
+
+                              local otherRoot = otherCharacter:FindFirstChild("HumanoidRootPart")
+                              local humanoid = otherCharacter:FindFirstChildOfClass("Humanoid")
+
+                              if otherRoot and humanoid then
+                                 otherRoot.CFrame = myRoot.CFrame * CFrame.new(0, 0, -5)
+                              end
+
+                           end
+
+                        end
+
+                     end
+
+                  end
+
+                  RunService.Heartbeat:Wait()
+
+               end
+
+            end)
+
+         else
+
+            tpBotsButton.Text = "TP Players: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+      tpBotsButton.MouseEnter:Connect(function()
+         TweenService:Create(
+         tpBotsButton,
+         TweenInfo.new(0.15),
+         {BackgroundColor3 = Color3.fromRGB(45, 45, 53)}
+         ):Play()
+      end)
+
+      tpBotsButton.MouseLeave:Connect(function()
+         TweenService:Create(
+         tpBotsButton,
+         TweenInfo.new(0.15),
+         {BackgroundColor3 = Color3.fromRGB(28, 28, 34)}
+         ):Play()
+      end)
+
+      -- ============================================================
+      -- WALKSPEED
+      -- ============================================================
+
+      local walkSpeedEnabled = false
+      local walkSpeedValue = 16
+
+      local walkSpeedButton = Instance.new("TextButton")
+      walkSpeedButton.Name = "WalkSpeedButton"
+      walkSpeedButton.Size = UDim2.new(0, 130, 0, 34)
+      walkSpeedButton.Position = UDim2.new(0, 158, 0, 223)
+      walkSpeedButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      walkSpeedButton.BorderSizePixel = 0
+      walkSpeedButton.Text = "WalkSpeed: OFF"
+      walkSpeedButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      walkSpeedButton.TextSize = 11
+      walkSpeedButton.Font = Enum.Font.GothamBold
+      walkSpeedButton.AutoButtonColor = false
+      walkSpeedButton.ZIndex = 8
+      walkSpeedButton.Parent = frame
+
+      local walkSpeedCorner = Instance.new("UICorner")
+      walkSpeedCorner.CornerRadius = UDim.new(0, 9)
+      walkSpeedCorner.Parent = walkSpeedButton
+
+      local walkSpeedStroke = Instance.new("UIStroke")
+      walkSpeedStroke.Thickness = 1.3
+      walkSpeedStroke.Transparency = 0.15
+      walkSpeedStroke.Parent = walkSpeedButton
+
+      local walkSpeedBox = Instance.new("TextBox")
+      walkSpeedBox.Name = "WalkSpeedValue"
+      walkSpeedBox.Size = UDim2.new(0, 80, 0, 28)
+      walkSpeedBox.Position = UDim2.new(0, 293, 0, 223)
+      walkSpeedBox.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+      walkSpeedBox.BorderSizePixel = 0
+      walkSpeedBox.Text = "16"
+      walkSpeedBox.PlaceholderText = "Speed"
+      walkSpeedBox.TextColor3 = Color3.fromRGB(220, 220, 225)
+      walkSpeedBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 130)
+      walkSpeedBox.TextSize = 11
+      walkSpeedBox.Font = Enum.Font.GothamBold
+      walkSpeedBox.ClearTextOnFocus = false
+      walkSpeedBox.ZIndex = 8
+      walkSpeedBox.Parent = frame
+
+      local walkSpeedBoxCorner = Instance.new("UICorner")
+      walkSpeedBoxCorner.CornerRadius = UDim.new(0, 8)
+      walkSpeedBoxCorner.Parent = walkSpeedBox
+
+      local function applyWalkSpeed()
+
+         local character = player.Character
+         local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+         if humanoid then
+            humanoid.WalkSpeed = walkSpeedValue
+         end
+
+      end
+
+      walkSpeedButton.MouseButton1Click:Connect(function()
+
+         walkSpeedEnabled = not walkSpeedEnabled
+
+         if walkSpeedEnabled then
+
+            local value = tonumber(walkSpeedBox.Text)
+
+            if value and value >= 0 then
+               walkSpeedValue = value
+            else
+               walkSpeedBox.Text = tostring(walkSpeedValue)
+            end
+
+            applyWalkSpeed()
+
+            walkSpeedButton.Text = "WalkSpeed: ON"
+            status.Text = "WalkSpeed: " .. walkSpeedValue
+
+         else
+
+            local character = player.Character
+            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+            if humanoid then
+               humanoid.WalkSpeed = 16
+            end
+
+            walkSpeedButton.Text = "WalkSpeed: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+      walkSpeedBox.FocusLost:Connect(function()
+
+         local value = tonumber(walkSpeedBox.Text)
+
+         if value and value >= 0 then
+
+            walkSpeedValue = value
+            walkSpeedBox.Text = tostring(value)
+
+            if walkSpeedEnabled then
+               applyWalkSpeed()
+            end
+
+         else
+
+            walkSpeedBox.Text = tostring(walkSpeedValue)
+
+         end
+
+      end)
+
+      player.CharacterAdded:Connect(function(character)
+
+         character:WaitForChild("Humanoid")
+
+         if walkSpeedEnabled then
+            task.wait(0.2)
+            applyWalkSpeed()
+         end
+
+      end)
+
+      -- ============================================================
+      -- ANTI AFK
+      -- ============================================================
+
+      local antiAFKEnabled = false
+      local antiAFKConnection = nil
+
+      local antiAFKButton = Instance.new("TextButton")
+      antiAFKButton.Name = "AntiAFKButton"
+      antiAFKButton.Size = UDim2.new(0, 100, 0, 28)
+      antiAFKButton.Position = UDim2.new(0, 293, 0, 183)
+      antiAFKButton.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+      antiAFKButton.BorderSizePixel = 0
+      antiAFKButton.Text = "Anti AFK: OFF"
+      antiAFKButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      antiAFKButton.TextSize = 11
+      antiAFKButton.Font = Enum.Font.GothamBold
+      antiAFKButton.AutoButtonColor = false
+      antiAFKButton.ZIndex = 8
+      antiAFKButton.Parent = frame
+
+      local antiAFKCorner = Instance.new("UICorner")
+      antiAFKCorner.CornerRadius = UDim.new(0, 9)
+      antiAFKCorner.Parent = antiAFKButton
+
+      local antiAFKStroke = Instance.new("UIStroke")
+      antiAFKStroke.Thickness = 1.3
+      antiAFKStroke.Transparency = 0.15
+      antiAFKStroke.Parent = antiAFKButton
+
+
+      local function startAntiAFK()
+
+         if antiAFKConnection then
+            antiAFKConnection:Disconnect()
+            antiAFKConnection = nil
+         end
+
+         antiAFKConnection = task.spawn(function()
+
+            while antiAFKEnabled do
+
+               local character = player.Character
+               local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+
+               if humanoid and humanoid.Health > 0 then
+
+                  -- Pequeña actividad del personaje
+                  humanoid:Move(Vector3.new(0, 0, 0), false)
+
+               end
+
+               task.wait(30)
+
+            end
+
+         end)
+
+      end
+
+
+      antiAFKButton.MouseButton1Click:Connect(function()
+
+         antiAFKEnabled = not antiAFKEnabled
+
+         if antiAFKEnabled then
+
+            antiAFKButton.Text = "Anti AFK: ON"
+            status.Text = "Anti AFK active"
+
+            startAntiAFK()
+
+         else
+
+            antiAFKButton.Text = "Anti AFK: OFF"
+            status.Text = "Ready"
+
+         end
+
+      end)
+
+
+      antiAFKButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         antiAFKButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(45, 45, 53)
+         }
+         ):Play()
+
+      end)
+
+
+      antiAFKButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         antiAFKButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+         }
+         ):Play()
+
+      end)
+
+
+      player.CharacterAdded:Connect(function()
+
+         if antiAFKEnabled then
+            task.wait(1)
+            startAntiAFK()
+         end
+
+      end)
+
+      -- ============================================================
+      -- FIRMA
+      -- ============================================================
+
+      local signature = Instance.new("TextLabel")
+      signature.Name = "Signature"
+      signature.Size = UDim2.new(1, -36, 0, 20)
+      signature.Position = UDim2.new(0, 18, 1, -28)
+      signature.BackgroundTransparency = 1
+      signature.Text = "Subscribe: Globalscriptsrbx"
+      signature.TextColor3 = Color3.fromRGB(105, 105, 115)
+      signature.TextSize = 10
+      signature.Font = Enum.Font.Gotham
+      signature.TextXAlignment = Enum.TextXAlignment.Left
+      signature.ZIndex = 7
+      signature.Parent = frame
+
+      -- ============================================================
+      -- CONTADOR DE SESIÓN
+      -- ============================================================
+
+      local sessionSeconds = 0
+
+      local sessionTimer = Instance.new("TextLabel")
+      sessionTimer.Name = "SessionTimer"
+      sessionTimer.Size = UDim2.new(0, 125, 0, 20)
+      sessionTimer.Position = UDim2.new(0.5, -62, 1, -28)
+      sessionTimer.BackgroundTransparency = 1
+      sessionTimer.Text = "00:00:00:00"
+      sessionTimer.TextColor3 = Color3.fromRGB(105, 105, 115)
+      sessionTimer.TextSize = 10
+      sessionTimer.Font = Enum.Font.Gotham
+      sessionTimer.TextXAlignment = Enum.TextXAlignment.Center
+      sessionTimer.ZIndex = 7
+      sessionTimer.Parent = frame
+
+      local function formatSessionTime(seconds)
+
+         local days = math.floor(seconds / 86400)
+         local hours = math.floor((seconds % 86400) / 3600)
+         local minutes = math.floor((seconds % 3600) / 60)
+         local secs = seconds % 60
+
+         return string.format(
+         "%02d:%02d:%02d:%02d",
+         days,
+         hours,
+         minutes,
+         secs
+         )
+
+      end
+
+      task.spawn(function()
+
+         while gui.Parent do
+
+            sessionTimer.Text = formatSessionTime(sessionSeconds)
+
+            sessionSeconds += 1
+
+            task.wait(1)
+
+         end
+
+      end)
+      -- ============================================================
+      -- BOTON MINIMIZAR
+      -- ============================================================
+
+      local hideButton = Instance.new("TextButton")
+      hideButton.Name = "HideButton"
+      hideButton.Size = UDim2.new(0, 28, 0, 28)
+      hideButton.Position = UDim2.new(1, -37, 0, 7)
+      hideButton.BackgroundColor3 = Color3.fromRGB(38, 38, 45)
+      hideButton.BorderSizePixel = 0
+      hideButton.Text = "−"
+      hideButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+      hideButton.TextSize = 20
+      hideButton.Font = Enum.Font.GothamBold
+      hideButton.AutoButtonColor = false
+      hideButton.ZIndex = 10
+      hideButton.Parent = frame
+
+      local hideCorner = Instance.new("UICorner")
+      hideCorner.CornerRadius = UDim.new(0, 8)
+      hideCorner.Parent = hideButton
+
+      local hideStroke = Instance.new("UIStroke")
+      hideStroke.Thickness = 1
+      hideStroke.Transparency = 0.25
+      hideStroke.Parent = hideButton
+
+      -- ============================================================
+      -- BOTON PARA ABRIR
+      -- ============================================================
+
+      local openButton = Instance.new("TextButton")
+      openButton.Name = "OpenButton"
+      openButton.Size = UDim2.new(0, 46, 0, 46)
+      openButton.Position = UDim2.new(1, -75, 0, 30)
+      openButton.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+      openButton.BorderSizePixel = 0
+      openButton.Text = "☰"
+      openButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+      openButton.TextSize = 22
+      openButton.Font = Enum.Font.GothamBold
+      openButton.AutoButtonColor = false
+      openButton.Visible = false
+      openButton.Active = true
+      openButton.ZIndex = 20
+      openButton.Parent = gui
+
+      local openCorner = Instance.new("UICorner")
+      openCorner.CornerRadius = UDim.new(0, 11)
+      openCorner.Parent = openButton
+
+      local openStroke = Instance.new("UIStroke")
+      openStroke.Thickness = 1.8
+      openStroke.Transparency = 0.1
+      openStroke.Parent = openButton
+
+      -- ============================================================
+      -- DRAG UNIVERSAL
+      -- ============================================================
+
+      local function makeDraggable(object)
+
+         local dragging = false
+         local dragStart = nil
+         local startPosition = nil
+
+         object.InputBegan:Connect(function(input)
+
+            if input.UserInputType == Enum.UserInputType.MouseButton1
+            or input.UserInputType == Enum.UserInputType.Touch then
+
+               dragging = true
+               dragStart = input.Position
+               startPosition = object.Position
+
+               input.Changed:Connect(function()
+
+                  if input.UserInputState == Enum.UserInputState.End then
+                     dragging = false
+                  end
+
+               end)
+
+            end
+
+         end)
+
+         UserInputService.InputChanged:Connect(function(input)
+
+            if not dragging then
+               return
+            end
+
+            if input.UserInputType == Enum.UserInputType.MouseMovement
+            or input.UserInputType == Enum.UserInputType.Touch then
+
+               local delta = input.Position - dragStart
+
+               object.Position = UDim2.new(
+               startPosition.X.Scale,
+               startPosition.X.Offset + delta.X,
+
+               startPosition.Y.Scale,
+               startPosition.Y.Offset + delta.Y
+               )
+
+            end
+
+         end)
+
+      end
+
+      makeDraggable(frame)
+      makeDraggable(openButton)
+
+      -- ============================================================
+      -- RGB
+      -- ============================================================
+
+      task.spawn(function()
+
+         local hue = 0
+
+         while gui.Parent do
+
+            hue = (hue + 0.0025) % 1
+
+            local rgb = Color3.fromHSV(hue, 0.8, 1)
+
+            stroke.Color = rgb
+            glow.Color = rgb
+            openStroke.Color = rgb
+            avatarStroke.Color = rgb
+            hideStroke.Color = rgb
+
+            task.wait(0.03)
+
+         end
+
+      end)
+
+      -- ============================================================
+      -- BOTON MINIMIZAR
+      -- ============================================================
+
+      hideButton.MouseButton1Click:Connect(function()
+
+         frame.Visible = false
+         openButton.Visible = true
+
+      end)
+
+      -- ============================================================
+      -- BOTON ABRIR
+      -- ============================================================
+
+      openButton.MouseButton1Click:Connect(function()
+
+         frame.Visible = true
+         openButton.Visible = false
+
+      end)
+
+      -- ============================================================
+      -- EFECTOS DEL BOTON
+      -- ============================================================
+
+      hideButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         hideButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(55, 55, 63)
+         }
+         ):Play()
+
+      end)
+
+      hideButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         hideButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(38, 38, 45)
+         }
+         ):Play()
+
+      end)
+
+      openButton.MouseEnter:Connect(function()
+
+         TweenService:Create(
+         openButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+         }
+         ):Play()
+
+      end)
+
+      openButton.MouseLeave:Connect(function()
+
+         TweenService:Create(
+         openButton,
+         TweenInfo.new(0.15),
+         {
+            BackgroundColor3 = Color3.fromRGB(15, 15, 18)
+         }
+         ):Play()
+
+      end)
+      -- Aqui comienza ANIMACION BIENVENIDA ABAJO colocar abajo de cualquier script. Puramente abajo
+      local Players = game:GetService("Players")
+      local TweenService = game:GetService("TweenService")
+      local Lighting = game:GetService("Lighting")
+
+      local player = Players.LocalPlayer
+      local playerGui = player:WaitForChild("PlayerGui")
+
+      print("[INTRO] Iniciando versión Premium...")
+
+      -- ============================================================
+      -- CONFIGURACIÓN
+      -- ============================================================
+
+      local INTRO_TIME = 2.5
+      local PANEL_WIDTH = 380
+      local PANEL_HEIGHT = 125
+
+      -- ============================================================
+      -- GUI
+      -- ============================================================
+
+      local gui = Instance.new("ScreenGui")
+      gui.Name = "PremiumIntro"
+      gui.IgnoreGuiInset = true
+      gui.ResetOnSpawn = false
+      gui.DisplayOrder = 999
+      gui.Parent = playerGui
+
+      -- ============================================================
+      -- FONDO
+      -- ============================================================
+
+      local background = Instance.new("Frame")
+      background.Size = UDim2.fromScale(1, 1)
+      background.Position = UDim2.fromScale(0, 0)
+      background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+      background.BackgroundTransparency = 1
+      background.BorderSizePixel = 0
+      background.ZIndex = 1
+      background.Parent = gui
+
+      -- ============================================================
+      -- BLUR
+      -- ============================================================
+
+      local blur = Instance.new("BlurEffect")
+      blur.Name = "PremiumIntroBlur"
+      blur.Size = 0
+      blur.Parent = Lighting
+
+      -- ============================================================
+      -- PANEL
+      -- ============================================================
+
+      local panel = Instance.new("Frame")
+      panel.AnchorPoint = Vector2.new(0.5, 0.5)
+      panel.Position = UDim2.fromScale(0.5, 0.5)
+      panel.Size = UDim2.fromOffset(0, 0)
+      panel.BackgroundColor3 = Color3.fromRGB(13, 13, 17)
+      panel.BorderSizePixel = 0
+      panel.ZIndex = 2
+      panel.Parent = background
+
+      local panelCorner = Instance.new("UICorner")
+      panelCorner.CornerRadius = UDim.new(0, 18)
+      panelCorner.Parent = panel
+
+      -- ============================================================
+      -- BORDE RGB
+      -- ============================================================
+
+      local border = Instance.new("UIStroke")
+      border.Thickness = 2
+      border.Transparency = 0.05
+      border.Parent = panel
+
+      -- ============================================================
+      -- GLOW
+      -- ============================================================
+
+      local glow = Instance.new("UIStroke")
+      glow.Thickness = 8
+      glow.Transparency = 0.82
+      glow.Parent = panel
+
+      -- ============================================================
+      -- AVATAR
+      -- ============================================================
+
+      local avatarHolder = Instance.new("Frame")
+      avatarHolder.Size = UDim2.fromOffset(82, 82)
+      avatarHolder.Position = UDim2.new(0, 17, 0.5, -41)
+      avatarHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+      avatarHolder.BorderSizePixel = 0
+      avatarHolder.ZIndex = 3
+      avatarHolder.Parent = panel
+
+      local avatarHolderCorner = Instance.new("UICorner")
+      avatarHolderCorner.CornerRadius = UDim.new(1, 0)
+      avatarHolderCorner.Parent = avatarHolder
+
+      local avatarStroke = Instance.new("UIStroke")
+      avatarStroke.Thickness = 2
+      avatarStroke.Parent = avatarHolder
+
+      local avatar = Instance.new("ImageLabel")
+      avatar.Size = UDim2.new(1, -6, 1, -6)
+      avatar.Position = UDim2.new(0, 3, 0, 3)
+      avatar.BackgroundTransparency = 1
+      avatar.ImageTransparency = 1
+      avatar.ZIndex = 4
+      avatar.Parent = avatarHolder
+
+      local avatarCorner = Instance.new("UICorner")
+      avatarCorner.CornerRadius = UDim.new(1, 0)
+      avatarCorner.Parent = avatar
+
+      local success, image = pcall(function()
+         return Players:GetUserThumbnailAsync(
+         player.UserId,
+         Enum.ThumbnailType.HeadShot,
+         Enum.ThumbnailSize.Size420x420
+         )
+      end)
+
+      if success then
+         avatar.Image = image
+      end
+
+      -- ============================================================
+      -- TEXTO PRINCIPAL
+      -- ============================================================
+
+      local welcome = Instance.new("TextLabel")
+      welcome.Size = UDim2.new(1, -125, 0, 36)
+      welcome.Position = UDim2.new(0, 115, 0, 20)
+      welcome.BackgroundTransparency = 1
+      welcome.Text = "Welcome, " .. player.Name
+      welcome.TextColor3 = Color3.fromRGB(0, 255, 120)
+      welcome.TextSize = 22
+      welcome.Font = Enum.Font.GothamBold
+      welcome.TextXAlignment = Enum.TextXAlignment.Left
+      welcome.TextTransparency = 1
+      welcome.ZIndex = 4
+      welcome.Parent = panel
+
+      -- ============================================================
+      -- SUBTÍTULO
+      -- ============================================================
+
+      local subtitle = Instance.new("TextLabel")
+      subtitle.Size = UDim2.new(1, -125, 0, 24)
+      subtitle.Position = UDim2.new(0, 115, 0, 57)
+      subtitle.BackgroundTransparency = 1
+      subtitle.Text = "Initializing Premium System..."
+      subtitle.TextColor3 = Color3.fromRGB(175, 175, 185)
+      subtitle.TextSize = 13
+      subtitle.Font = Enum.Font.Gotham
+      subtitle.TextXAlignment = Enum.TextXAlignment.Left
+      subtitle.TextTransparency = 1
+      subtitle.ZIndex = 4
+      subtitle.Parent = panel
+
+      -- ============================================================
+      -- LÍNEA RGB
+      -- ============================================================
+
+      local accentLine = Instance.new("Frame")
+      accentLine.Size = UDim2.new(0, 0, 0, 2)
+      accentLine.Position = UDim2.new(0, 115, 1, -19)
+      accentLine.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+      accentLine.BorderSizePixel = 0
+      accentLine.ZIndex = 4
+      accentLine.Parent = panel
+
+      local lineCorner = Instance.new("UICorner")
+      lineCorner.CornerRadius = UDim.new(1, 0)
+      lineCorner.Parent = accentLine
+
+      -- ============================================================
+      -- PEQUEÑO INDICADOR
+      -- ============================================================
+
+      local statusDot = Instance.new("Frame")
+      statusDot.Size = UDim2.fromOffset(7, 7)
+      statusDot.Position = UDim2.new(0, 115, 1, -34)
+      statusDot.BackgroundColor3 = Color3.fromRGB(0, 255, 120)
+      statusDot.BorderSizePixel = 0
+      statusDot.ZIndex = 4
+      statusDot.Parent = panel
+
+      local dotCorner = Instance.new("UICorner")
+      dotCorner.CornerRadius = UDim.new(1, 0)
+      dotCorner.Parent = statusDot
+
+      -- ============================================================
+      -- ANIMACIÓN DE FONDO
+      -- ============================================================
+
+      TweenService:Create(
+      background,
+      TweenInfo.new(
+      0.45,
+      Enum.EasingStyle.Quad,
+      Enum.EasingDirection.Out
+      ),
+      {
+         BackgroundTransparency = 0.22
+      }
+      ):Play()
+
+      TweenService:Create(
+      blur,
+      TweenInfo.new(
+      0.45,
+      Enum.EasingStyle.Quad,
+      Enum.EasingDirection.Out
+      ),
+      {
+         Size = 16
+      }
+      ):Play()
+
+      -- ============================================================
+      -- ENTRADA DEL PANEL
+      -- ============================================================
+
+      task.wait(0.12)
+
+      TweenService:Create(
+      panel,
+      TweenInfo.new(
+      0.65,
+      Enum.EasingStyle.Back,
+      Enum.EasingDirection.Out
+      ),
+      {
+         Size = UDim2.fromOffset(PANEL_WIDTH, PANEL_HEIGHT)
+      }
+      ):Play()
+
+      task.wait(0.3)
+
+      -- ============================================================
+      -- APARICIÓN DEL AVATAR
+      -- ============================================================
+
+      TweenService:Create(
+      avatar,
+      TweenInfo.new(
+      0.45,
+      Enum.EasingStyle.Back,
+      Enum.EasingDirection.Out
+      ),
+      {
+         ImageTransparency = 0
+      }
+      ):Play()
+
+      TweenService:Create(
+      avatarHolder,
+      TweenInfo.new(
+      0.45,
+      Enum.EasingStyle.Back,
+      Enum.EasingDirection.Out
+      ),
+      {
+         BackgroundTransparency = 0
+      }
+      ):Play()
+
+      -- ============================================================
+      -- APARICIÓN DEL TEXTO
+      -- ============================================================
+
+      task.wait(0.08)
+
+      TweenService:Create(
+      welcome,
+      TweenInfo.new(
+      0.4,
+      Enum.EasingStyle.Quad,
+      Enum.EasingDirection.Out
+      ),
+      {
+         TextTransparency = 0
+      }
+      ):Play()
+
+      task.wait(0.08)
+
+      TweenService:Create(
+      subtitle,
+      TweenInfo.new(
+      0.45,
+      Enum.EasingStyle.Quad,
+      Enum.EasingDirection.Out
+      ),
+      {
+         TextTransparency = 0
+      }
+      ):Play()
+
+      -- ============================================================
+      -- LÍNEA
+      -- ============================================================
+
+      TweenService:Create(
+      accentLine,
+      TweenInfo.new(
+      0.5,
+      Enum.EasingStyle.Quart,
+      Enum.EasingDirection.Out
+      ),
+      {
+         Size = UDim2.new(1, -135, 0, 2)
+      }
+      ):Play()
+
+      -- ============================================================
+      -- RGB
+      -- ============================================================
+
+      local rgbRunning = true
+
+      task.spawn(function()
+
+         local hue = 0
+
+         while rgbRunning and gui.Parent do
+
+            hue = (hue + 0.004) % 1
+
+            local color = Color3.fromHSV(
+            hue,
+            1,
+            1
+            )
+
+            border.Color = color
+            glow.Color = color
+            avatarStroke.Color = color
+            welcome.TextColor3 = color
+            accentLine.BackgroundColor3 = color
+            statusDot.BackgroundColor3 = color
+
+            task.wait(0.03)
+         end
+      end)
+
+      -- ============================================================
+      -- GLOW PULSANTE
+      -- ============================================================
+
+      local pulseRunning = true
+
+      task.spawn(function()
+
+         while pulseRunning and panel.Parent do
+
+            TweenService:Create(
+            glow,
+            TweenInfo.new(
+            0.8,
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.InOut
+            ),
+            {
+               Transparency = 0.68
+            }
+            ):Play()
+
+            task.wait(0.8)
+
+            if not pulseRunning then
+               break
+            end
+
+            TweenService:Create(
+            glow,
+            TweenInfo.new(
+            0.8,
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.InOut
+            ),
+            {
+               Transparency = 0.86
+            }
+            ):Play()
+
+            task.wait(0.8)
+         end
+      end)
+
+      -- ============================================================
+      -- INDICADOR PULSANTE
+      -- ============================================================
+
+      local dotRunning = true
+
+      task.spawn(function()
+
+         while dotRunning and statusDot.Parent do
+
+            TweenService:Create(
+            statusDot,
+            TweenInfo.new(
+            0.5,
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.InOut
+            ),
+            {
+               Size = UDim2.fromOffset(10, 10)
+            }
+            ):Play()
+
+            task.wait(0.5)
+
+            if not dotRunning then
+               break
+            end
+
+            TweenService:Create(
+            statusDot,
+            TweenInfo.new(
+            0.5,
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.InOut
+            ),
+            {
+               Size = UDim2.fromOffset(7, 7)
+            }
+            ):Play()
+
+            task.wait(0.5)
+         end
+      end)
+
+      -- ============================================================
+      -- TIEMPO EN PANTALLA
+      -- ============================================================
+
+      task.wait(INTRO_TIME)
+
+      -- ============================================================
+      -- DETENER EFECTOS
+      -- ============================================================
+
+      rgbRunning = false
+      pulseRunning = false
+      dotRunning = false
+
+      -- ============================================================
+      -- SALIDA
+      -- ============================================================
+
+      local exitInfo = TweenInfo.new(
+      0.5,
+      Enum.EasingStyle.Quad,
+      Enum.EasingDirection.In
+      )
+
+      TweenService:Create(
+      background,
+      exitInfo,
+      {
+         BackgroundTransparency = 1
+      }
+      ):Play()
+
+      TweenService:Create(
+      blur,
+      exitInfo,
+      {
+         Size = 0
+      }
+      ):Play()
+
+      TweenService:Create(
+      panel,
+      TweenInfo.new(
+      0.5,
+      Enum.EasingStyle.Back,
+      Enum.EasingDirection.In
+      ),
+      {
+         Size = UDim2.fromOffset(0, 0)
+      }
+      ):Play()
+
+      TweenService:Create(
+      welcome,
+      exitInfo,
+      {
+         TextTransparency = 1
+      }
+      ):Play()
+
+      TweenService:Create(
+      subtitle,
+      exitInfo,
+      {
+         TextTransparency = 1
+      }
+      ):Play()
+
+      TweenService:Create(
+      avatar,
+      exitInfo,
+      {
+         ImageTransparency = 1
+      }
+      ):Play()
+
+      TweenService:Create(
+      accentLine,
+      exitInfo,
+      {
+         Size = UDim2.new(0, 0, 0, 2)
+      }
+      ):Play()
+
+      task.wait(0.55)
+
+      -- ============================================================
+      -- LIMPIEZA
+      -- ============================================================
+
+      if blur then
+         blur:Destroy()
+      end
+
+      if gui then
+         gui:Destroy()
+      end
+
+      print("[INTRO] Premium finalizada correctamente")
+
+
+      -- aqui arriba debe terminar tu script principal
+
+   else
+
+      status.Text = "✕ La clave no es válida."
+      status.TextColor3 = Color3.fromRGB(255, 90, 90)
+
+   end
+
+end)
