@@ -1,0 +1,156 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "CoordsGui"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = playerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 250, 0, 118)
+frame.Position = UDim2.new(0, 16, 0, 80)
+frame.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Parent = screenGui
+
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 9)
+
+local dragBar = Instance.new("TextButton")
+dragBar.Size = UDim2.new(1, 0, 0, 28)
+dragBar.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+dragBar.BorderSizePixel = 0
+dragBar.Text = "☰  Coordenadas"
+dragBar.TextColor3 = Color3.fromRGB(220, 220, 225)
+dragBar.TextSize = 13
+dragBar.Font = Enum.Font.GothamBold
+dragBar.AutoButtonColor = false
+dragBar.Parent = frame
+
+Instance.new("UICorner", dragBar).CornerRadius = UDim.new(0, 9)
+
+local liveLabel = Instance.new("TextLabel")
+liveLabel.Size = UDim2.new(1, -12, 0, 18)
+liveLabel.Position = UDim2.new(0, 6, 0, 32)
+liveLabel.BackgroundTransparency = 1
+liveLabel.Text = "X: --  Y: --  Z: --"
+liveLabel.TextColor3 = Color3.fromRGB(160, 160, 170)
+liveLabel.TextSize = 12
+liveLabel.Font = Enum.Font.Code
+liveLabel.TextXAlignment = Enum.TextXAlignment.Left
+liveLabel.Parent = frame
+
+local coordsBox = Instance.new("TextBox")
+coordsBox.Size = UDim2.new(1, -12, 0, 32)
+coordsBox.Position = UDim2.new(0, 6, 0, 50)
+coordsBox.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+coordsBox.BorderSizePixel = 0
+coordsBox.Text = "Toca Copiar"
+coordsBox.TextColor3 = Color3.fromRGB(220, 220, 225)
+coordsBox.TextSize = 11
+coordsBox.Font = Enum.Font.Code
+coordsBox.TextWrapped = true
+coordsBox.ClearTextOnFocus = false
+coordsBox.TextEditable = false
+coordsBox.Parent = frame
+
+Instance.new("UICorner", coordsBox).CornerRadius = UDim.new(0, 6)
+
+local copyButton = Instance.new("TextButton")
+copyButton.Size = UDim2.new(1, -12, 0, 28)
+copyButton.Position = UDim2.new(0, 6, 0, 86)
+copyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+copyButton.BorderSizePixel = 0
+copyButton.Text = "Copiar CFrame"
+copyButton.TextColor3 = Color3.fromRGB(220, 220, 225)
+copyButton.TextSize = 13
+copyButton.Font = Enum.Font.GothamBold
+copyButton.AutoButtonColor = false
+copyButton.Parent = frame
+
+Instance.new("UICorner", copyButton).CornerRadius = UDim.new(0, 7)
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+local function update(input)
+	local delta = input.Position - dragStart
+	frame.Position = UDim2.new(
+		startPos.X.Scale,
+		startPos.X.Offset + delta.X,
+		startPos.Y.Scale,
+		startPos.Y.Offset + delta.Y
+	)
+end
+
+dragBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+		or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+dragBar.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement
+		or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
+
+local function getRoot()
+	local char = player.Character
+	return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+copyButton.MouseButton1Click:Connect(function()
+	local root = getRoot()
+	if not root then
+		coordsBox.Text = "No hay personaje"
+		return
+	end
+
+	local p = root.Position
+	local text = string.format("CFrame.new(%.3f, %.3f, %.3f)", p.X, p.Y, p.Z)
+
+	coordsBox.Text = text
+	coordsBox:CaptureFocus()
+	coordsBox.CursorPosition = #text + 1
+	coordsBox.SelectionStart = 1
+
+	copyButton.BackgroundColor3 = Color3.fromRGB(30, 140, 70)
+	copyButton.Text = "Copiado"
+	task.delay(0.7, function()
+		if copyButton.Parent then
+			copyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+			copyButton.Text = "Copiar CFrame"
+		end
+	end)
+end)
+
+RunService.RenderStepped:Connect(function()
+	local root = getRoot()
+	if root then
+		local p = root.Position
+		liveLabel.Text = string.format("X: %.2f  Y: %.2f  Z: %.2f", p.X, p.Y, p.Z)
+	else
+		liveLabel.Text = "X: --  Y: --  Z: --"
+	end
+end)
