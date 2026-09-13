@@ -729,7 +729,7 @@ verify.MouseButton1Click:Connect(function()
 
       -- Crear el Toggle en tu pestaña (reemplaza 'tab2' por la variable de tu pestaña)
       local NightToggle = tab2:CreateToggle({
-         Name = "Cielo Nocturno (Visual)",
+         Name = "Night Sky (Visual)",
          CurrentValue = false,
          Flag = "NightSkyToggle", -- Identificador único para guardar configuraciones
          Callback = function(Value)
