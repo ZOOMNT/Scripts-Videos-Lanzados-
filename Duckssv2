@@ -690,7 +690,7 @@ verify.MouseButton1Click:Connect(function()
       })
 
       tab1:CreateInput({
-         Name = "Target Cooldown(new)",
+         Name = "Fast Target Time(new)",
          PlaceholderText = "1",
          RemoveTextAfterFocusLost = false,
 
