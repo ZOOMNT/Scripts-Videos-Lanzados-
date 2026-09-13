@@ -690,7 +690,7 @@ verify.MouseButton1Click:Connect(function()
       })
 
       tab1:CreateInput({
-         Name = "Target Flash",
+         Name = "Target Cooldown(new)",
          PlaceholderText = "1",
          RemoveTextAfterFocusLost = false,
 
